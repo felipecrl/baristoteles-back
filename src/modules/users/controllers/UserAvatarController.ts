@@ -12,7 +12,7 @@ class UserAvatarController {
       throw new AppError("File doesn't existis.")
     }
 
-    const user = updateAvatar.execute({
+    const user = await updateAvatar.execute({
       user_id: request.user.id,
       avatarFilename: request.file.filename
     })

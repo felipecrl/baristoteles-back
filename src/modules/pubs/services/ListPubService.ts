@@ -4,7 +4,7 @@ import { getCustomRepository } from 'typeorm'
 import PubRepository from '@modules/pubs/typeorm/repositories/PubsRepository'
 import Pub from '@modules/pubs/typeorm/entities/Pubs'
 
-import RedisCache from '@shared/cache/RedisCache'
+import redisCache from '@shared/cache/RedisCache'
 
 interface IPaginatePubs {
   from: number
@@ -20,8 +20,6 @@ interface IPaginatePubs {
 class ListPubService {
   public async execute(): Promise<IPaginatePubs> {
     const pubsRepository = getCustomRepository(PubRepository)
-
-    const redisCache = new RedisCache()
 
     let pubs = await redisCache.recover<any>('api-baristoteles-PUB_LIST')
 

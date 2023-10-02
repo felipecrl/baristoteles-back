@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer'
-import { SES } from '@aws-sdk/client-ses'
+import { SES, SendRawEmailCommand } from '@aws-sdk/client-ses'
 
 import mailConfig from '@config/mail/mail'
 
@@ -35,10 +35,13 @@ export default class SESMail {
   }: ISendMail): Promise<void> {
     const mailTemplate = new HandlebarsMailTemplate()
 
+    const ses = new SES()
+
     const transporter = nodemailer.createTransport({
-      SES: new SES({
-        apiVersion: '2012-10-17'
-      })
+      SES: {
+        ses: ses,
+        aws: { SendRawEmailCommand }
+      }
     })
 
     const { email, name } = mailConfig.defaults.from

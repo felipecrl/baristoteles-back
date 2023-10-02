@@ -4,7 +4,7 @@ import PubRepository from '@modules/pubs/typeorm/repositories/PubsRepository'
 import Pub from '@modules/pubs/typeorm/entities/Pubs'
 
 import AppError from '@shared/errors/AppError'
-import RedisCache from '@shared/cache/RedisCache'
+import redisCache from '@shared/cache/RedisCache'
 
 interface IRequest {
   id: string
@@ -39,8 +39,6 @@ class UpdatePubService {
     if (pubExists && name !== pub.name) {
       throw new AppError('There are a pub with this name')
     }
-
-    const redisCache = new RedisCache()
 
     await redisCache.invalidate('api-baristoteles-PUB_LIST')
 

@@ -4,7 +4,7 @@ import PubRepository from '@modules/pubs/typeorm/repositories/PubsRepository'
 import Pub from '@modules/pubs/typeorm/entities/Pubs'
 
 import AppError from '@shared/errors/AppError'
-import RedisCache from '@shared/cache/RedisCache'
+import redisCache from '@shared/cache/RedisCache'
 
 interface IRequest {
   name: string
@@ -31,8 +31,6 @@ class CreatePubService {
     if (pubExists) {
       throw new AppError('There is already one pub whit this name.')
     }
-
-    const redisCache = new RedisCache()
 
     const pub = pubsRepository.create({
       name,
