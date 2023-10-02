@@ -2,6 +2,8 @@ import { getCustomRepository } from 'typeorm'
 import path from 'path'
 
 import EtherealMail from '@config/mail/EtherealMail'
+import SESMail from '@config/mail/SESMail'
+import mailConfig from '@config/mail/mail'
 
 import UsersRepository from '@modules/users/typeorm/repositories/UsersRepository'
 import UserTokenRepository from '@modules/users/typeorm/repositories/UserTokenRepository'
@@ -31,6 +33,24 @@ class SendForgotPasswordEmailService {
       'views',
       'forgot_password.hbs'
     )
+
+    if (mailConfig.driver === 'ses') {
+      await SESMail.sendMail({
+        to: {
+          name: user.name,
+          email: user.email
+        },
+        subject: '[Baristóteles] Recuperação de Senha',
+        templateData: {
+          file: forgotPasswordTemplate,
+          variables: {
+            name: user.name,
+            link: `${process.env.APP_WEB_URL}/password/reset?token=${token}`
+          }
+        }
+      })
+      return
+    }
 
     await EtherealMail.sendMail({
       to: {
