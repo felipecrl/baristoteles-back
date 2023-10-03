@@ -37,7 +37,7 @@ export default {
   },
   config: {
     aws: {
-      bucket: 'api-baristoteles'
+      bucket: 'baristoteles-api'
     }
   }
 } as IUploadConfig
