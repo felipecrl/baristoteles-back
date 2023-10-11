@@ -1,22 +1,18 @@
-import { getCustomRepository } from 'typeorm'
+import { inject, injectable } from 'tsyringe'
 
-import PubRepository from '@modules/pubs/typeorm/repositories/PubsRepository'
-import Pub from '@modules/pubs/typeorm/entities/Pubs'
+import { IPub, IUpdatePub } from '@modules/pubs/domain/models'
+import { IPubsRepository } from '@modules/pubs/domain/repositories/IPubsRepository'
 
 import AppError from '@shared/errors/AppError'
 import redisCache from '@shared/cache/RedisCache'
 
-interface IRequest {
-  id: string
-  name: string
-  address: string
-  number: string
-  neighborhood: string
-  instagram: string
-  recommendation: string
-}
-
+@injectable()
 class UpdatePubService {
+  constructor(
+    @inject('PubRepository')
+    private pubsRepository: IPubsRepository
+  ) {}
+
   public async execute({
     id,
     name,
@@ -25,16 +21,14 @@ class UpdatePubService {
     neighborhood,
     instagram,
     recommendation
-  }: IRequest): Promise<Pub> {
-    const pubsRepository = getCustomRepository(PubRepository)
-
-    const pub = await pubsRepository.findOne(id)
+  }: IUpdatePub): Promise<IPub> {
+    const pub = await this.pubsRepository.findById(id)
 
     if (!pub) {
       throw new AppError('Pub not found!')
     }
 
-    const pubExists = await pubsRepository.findByName(name)
+    const pubExists = await this.pubsRepository.findByName(name)
 
     if (pubExists && name !== pub.name) {
       throw new AppError('There are a pub with this name')
@@ -49,7 +43,7 @@ class UpdatePubService {
     pub.instagram = instagram
     pub.recommendation = recommendation
 
-    await pubsRepository.save(pub)
+    await this.pubsRepository.save(pub)
 
     return pub
   }

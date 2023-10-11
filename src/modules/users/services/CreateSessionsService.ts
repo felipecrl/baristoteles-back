@@ -1,28 +1,26 @@
-import { getCustomRepository } from 'typeorm'
 import { compare } from 'bcryptjs'
-import { sign } from 'jsonwebtoken'
+import { sign, Secret } from 'jsonwebtoken'
+import { inject, injectable } from 'tsyringe'
 
 import authConfig from '@config/auth'
 
-import UsersRepository from '@modules/users/typeorm/repositories/UsersRepository'
-import User from '@modules/users/typeorm/entities/Users'
+import { ICreateSession, IResponseSession } from '@modules/users/domain/models'
+import { IUsersRepository } from '@modules/users/domain/repositopries/IUsersRepository'
 
 import AppError from '@shared/errors/AppError'
 
-interface IRequest {
-  email: string
-  password: string
-}
-
-interface IResponse {
-  user: User
-  token: string
-}
-
+@injectable()
 class CreateSessionsService {
-  public async execute({ email, password }: IRequest): Promise<IResponse> {
-    const usersRepository = getCustomRepository(UsersRepository)
-    const user = await usersRepository.findByEmail(email)
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository
+  ) {}
+
+  public async execute({
+    email,
+    password
+  }: ICreateSession): Promise<IResponseSession> {
+    const user = await this.usersRepository.findByEmail(email)
 
     if (!user) {
       throw new AppError('Incorrect email/password combination.', 401)
@@ -34,7 +32,7 @@ class CreateSessionsService {
       throw new AppError('Incorrect email/password combination.', 401)
     }
 
-    const token = sign({}, authConfig.jwt.secret, {
+    const token = sign({}, authConfig.jwt.secret as Secret, {
       subject: user.id,
       expiresIn: authConfig.jwt.expiresIn
     })

@@ -1,19 +1,20 @@
-import { getCustomRepository } from 'typeorm'
+import { inject, injectable } from 'tsyringe'
 
-import PubRepository from '@modules/pubs/typeorm/repositories/PubsRepository'
+import { IDeletePub } from '@modules/pubs/domain/models'
+import { IPubsRepository } from '@modules/pubs/domain/repositories/IPubsRepository'
 
 import AppError from '@shared/errors/AppError'
 import redisCache from '@shared/cache/RedisCache'
 
-interface IRequest {
-  id: string
-}
-
+@injectable()
 class DeletePubService {
-  public async execute({ id }: IRequest): Promise<void> {
-    const pubsRepository = getCustomRepository(PubRepository)
+  constructor(
+    @inject('PubRepository')
+    private pubsRepository: IPubsRepository
+  ) {}
 
-    const pub = await pubsRepository.findOne(id)
+  public async execute({ id }: IDeletePub): Promise<void> {
+    const pub = await this.pubsRepository.findById(id)
 
     if (!pub) {
       throw new AppError('Pub not found')
@@ -21,7 +22,7 @@ class DeletePubService {
 
     await redisCache.invalidate('api-baristoteles-PUB_LIST')
 
-    await pubsRepository.remove(pub)
+    await this.pubsRepository.remove(pub)
   }
 }
 

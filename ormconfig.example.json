@@ -6,12 +6,12 @@
   "password": "docker",
   "database": "apibaristoteles",
   "migrations": [
-    "./dist/shared/typeorm/migrations/*.js"
+    "./dist/shared/infra/typeorm/migrations/*.js"
   ],
   "entities": [
-    "./dist/modules/**/typeorm/entities/*.js"
+    "./dist/modules/**/infra/typeorm/entities/*.js"
   ],
   "cli": {
-    "migrationsDir": "./dist/shared/typeorm/migrations"
+    "migrationsDir": "./dist/shared/infra/typeorm/migrations"
   }
 }

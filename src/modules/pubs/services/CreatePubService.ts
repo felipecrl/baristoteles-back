@@ -1,21 +1,18 @@
-import { getCustomRepository } from 'typeorm'
+import { inject, injectable } from 'tsyringe'
 
-import PubRepository from '@modules/pubs/typeorm/repositories/PubsRepository'
-import Pub from '@modules/pubs/typeorm/entities/Pubs'
+import { ICreatePub, IPub } from '@modules/pubs/domain/models'
+import { IPubsRepository } from '@modules/pubs/domain/repositories/IPubsRepository'
 
 import AppError from '@shared/errors/AppError'
 import redisCache from '@shared/cache/RedisCache'
 
-interface IRequest {
-  name: string
-  address: string
-  number: string
-  neighborhood: string
-  instagram: string
-  recommendation: string
-}
-
+@injectable()
 class CreatePubService {
+  constructor(
+    @inject('PubRepository')
+    private pubsRepository: IPubsRepository
+  ) {}
+
   public async execute({
     name,
     address,
@@ -23,16 +20,14 @@ class CreatePubService {
     neighborhood,
     instagram,
     recommendation
-  }: IRequest): Promise<Pub> {
-    const pubsRepository = getCustomRepository(PubRepository)
-
-    const pubExists = await pubsRepository.findByName(name)
+  }: ICreatePub): Promise<IPub> {
+    const pubExists = await this.pubsRepository.findByName(name)
 
     if (pubExists) {
       throw new AppError('There is already one pub whit this name.')
     }
 
-    const pub = pubsRepository.create({
+    const pub = await this.pubsRepository.create({
       name,
       address,
       number,
@@ -42,8 +37,6 @@ class CreatePubService {
     })
 
     await redisCache.invalidate('api-baristoteles-PUB_LIST')
-
-    await pubsRepository.save(pub)
 
     return pub
   }

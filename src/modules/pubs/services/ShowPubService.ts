@@ -1,19 +1,19 @@
-import { getCustomRepository } from 'typeorm'
+import { inject, injectable } from 'tsyringe'
 
-import PubRepository from '@modules/pubs/typeorm/repositories/PubsRepository'
-import Pub from '@modules/pubs/typeorm/entities/Pubs'
+import { IPub, IShowPub } from '@modules/pubs/domain/models'
+import { IPubsRepository } from '@modules/pubs/domain/repositories/IPubsRepository'
 
 import AppError from '@shared/errors/AppError'
 
-interface IRequest {
-  id: string
-}
-
+@injectable()
 class ShowPubService {
-  public async execute({ id }: IRequest): Promise<Pub> {
-    const pubsRepository = getCustomRepository(PubRepository)
+  constructor(
+    @inject('PubRepository')
+    private pubsRepository: IPubsRepository
+  ) {}
 
-    const pub = await pubsRepository.findOne(id)
+  public async execute({ id }: IShowPub): Promise<IPub> {
+    const pub = await this.pubsRepository.findById(id)
 
     if (!pub) {
       throw new AppError('Pub not found')

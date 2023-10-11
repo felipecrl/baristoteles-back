@@ -1,18 +1,19 @@
-import { getCustomRepository } from 'typeorm'
+import { inject, injectable } from 'tsyringe'
 
-import UsersRepository from '@modules/users/typeorm/repositories/UsersRepository'
-import User from '@modules/users/typeorm/entities/Users'
+import { IShowProfile, IUser } from '@modules/users/domain/models'
+import { IUsersRepository } from '@modules/users/domain/repositopries/IUsersRepository'
+
 import AppError from '@shared/errors/AppError'
 
-interface IRequest {
-  user_id: string
-}
-
+@injectable()
 class ShowProfileService {
-  public async execute({ user_id }: IRequest): Promise<User> {
-    const usersRepository = getCustomRepository(UsersRepository)
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository
+  ) {}
 
-    const user = await usersRepository.findById(user_id)
+  public async execute({ user_id }: IShowProfile): Promise<IUser> {
+    const user = await this.usersRepository.findById(user_id)
 
     if (!user) {
       throw new AppError('User not found.')

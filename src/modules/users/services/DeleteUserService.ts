@@ -1,24 +1,25 @@
-import { getCustomRepository } from 'typeorm'
+import { inject, injectable } from 'tsyringe'
 
-import UserRepository from '@modules/users/typeorm/repositories/UsersRepository'
+import { IDeleteUser } from '@modules/users/domain/models'
+import { IUsersRepository } from '@modules/users/domain/repositopries/IUsersRepository'
 
 import AppError from '@shared/errors/AppError'
 
-interface IRequest {
-  id: string
-}
-
+injectable()
 class DeleteUserService {
-  public async execute({ id }: IRequest): Promise<void> {
-    const userRepository = getCustomRepository(UserRepository)
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository
+  ) {}
 
-    const user = await userRepository.findOne(id)
+  public async execute({ id }: IDeleteUser): Promise<void> {
+    const user = await this.usersRepository.findById(id)
 
     if (!user) {
       throw new AppError('User not found')
     }
 
-    await userRepository.remove(user)
+    await this.usersRepository.remove(user)
   }
 }
 

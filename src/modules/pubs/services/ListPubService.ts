@@ -1,35 +1,40 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getCustomRepository } from 'typeorm'
+import { inject, injectable } from 'tsyringe'
 
-import PubRepository from '@modules/pubs/typeorm/repositories/PubsRepository'
-import Pub from '@modules/pubs/typeorm/entities/Pubs'
+import { IPaginatePubs } from '@modules/pubs/domain/models'
+import { IPubsRepository } from '@modules/pubs/domain/repositories/IPubsRepository'
 
 import redisCache from '@shared/cache/RedisCache'
 
-interface IPaginatePubs {
-  from: number
-  to: number
-  per_page: number
-  total: number
-  current_page: number
-  prev_page: number | null
-  next_page: number | null
-  data: Pub[]
+interface SearchParams {
+  page: number
+  limit: number
 }
 
+@injectable()
 class ListPubService {
-  public async execute(): Promise<IPaginatePubs> {
-    const pubsRepository = getCustomRepository(PubRepository)
+  constructor(
+    @inject('PubRepository')
+    private pubsRepository: IPubsRepository
+  ) {}
+
+  public async execute({ page, limit }: SearchParams): Promise<IPaginatePubs> {
+    const take = limit
+    const skip = (Number(page) - 1) * take
 
     let pubs = await redisCache.recover<any>('api-baristoteles-PUB_LIST')
 
     if (!pubs) {
-      pubs = await pubsRepository.createQueryBuilder().paginate()
+      pubs = await this.pubsRepository.findAll({
+        page,
+        skip,
+        take
+      })
 
       await redisCache.save('api-baristoteles-PUB_LIST', pubs)
     }
 
-    return pubs as IPaginatePubs
+    return pubs
   }
 }
 
