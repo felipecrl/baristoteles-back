@@ -3,8 +3,8 @@ import { isAfter, addHours } from 'date-fns'
 import { hash } from 'bcryptjs'
 
 import { IResetPassword } from '@modules/users/domain/models'
-import { IUsersRepository } from '@modules/users/domain/repositopries/IUsersRepository'
-import { IUserTokenRepository } from '@modules/users/domain/repositopries/IUserTokenRepository'
+import { IUsersRepository } from '@modules/users/domain/repositories/IUsersRepository'
+import { IUserTokenRepository } from '@modules/users/domain/repositories/IUserTokenRepository'
 
 import AppError from '@shared/errors/AppError'
 

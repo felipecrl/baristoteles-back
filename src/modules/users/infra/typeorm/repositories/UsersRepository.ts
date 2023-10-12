@@ -1,7 +1,7 @@
 import { getRepository, Repository } from 'typeorm'
 
 import User from '@modules/users/infra/typeorm/entities/Users'
-import { IUsersRepository } from '@modules/users/domain/repositopries/IUsersRepository'
+import { IUsersRepository } from '@modules/users/domain/repositories/IUsersRepository'
 import { ICreateUser, IPaginateUser } from '@modules/users/domain/models'
 
 type SearchParams = {

@@ -2,12 +2,12 @@ import { container } from 'tsyringe'
 
 import { IPubsRepository } from '@modules/pubs/domain/repositories/IPubsRepository'
 import PubRepository from '@modules/pubs/infra/typeorm/repositories/PubsRepository'
-import { IUsersRepository } from '@modules/users/domain/repositopries/IUsersRepository'
+import { IUsersRepository } from '@modules/users/domain/repositories/IUsersRepository'
 import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository'
-import { IUserTokenRepository } from '@modules/users/domain/repositopries/IUserTokenRepository'
+import { IUserTokenRepository } from '@modules/users/domain/repositories/IUserTokenRepository'
 import UserTokenRepository from '@modules/users/infra/typeorm/repositories/UserTokenRepository'
 
-// import '@modules/users/providers'
+import '@modules/users/providers'
 
 container.registerSingleton<IPubsRepository>('PubRepository', PubRepository)
 

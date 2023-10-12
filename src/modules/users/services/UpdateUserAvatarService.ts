@@ -7,7 +7,7 @@ import DiskStorageProvider from '@shared/providers/storageProvider/DiskStoragePr
 import S3StorageProvider from '@shared/providers/storageProvider/S3StorageProvider'
 
 import uploadConfig from '@config/upload'
-import { IUsersRepository } from '../domain/repositopries/IUsersRepository'
+import { IUsersRepository } from '../domain/repositories/IUsersRepository'
 
 @injectable()
 class UpdateUserAvatarService {

@@ -37,6 +37,7 @@ usersRouter.patch(
 
 usersRouter.delete(
   '/:id',
+  isAythenticated,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.string().uuid().required()

@@ -6,8 +6,8 @@ import SESMail from '@config/mail/SESMail'
 import mailConfig from '@config/mail/mail'
 
 import { ISendForgotPassword } from '@modules/users/domain/models'
-import { IUsersRepository } from '@modules/users/domain/repositopries/IUsersRepository'
-import { IUserTokenRepository } from '@modules/users/domain/repositopries/IUserTokenRepository'
+import { IUsersRepository } from '@modules/users/domain/repositories/IUsersRepository'
+import { IUserTokenRepository } from '@modules/users/domain/repositories/IUserTokenRepository'
 
 import AppError from '@shared/errors/AppError'
 

@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe'
 
 import { IDeleteUser } from '@modules/users/domain/models'
-import { IUsersRepository } from '@modules/users/domain/repositopries/IUsersRepository'
+import { IUsersRepository } from '@modules/users/domain/repositories/IUsersRepository'
 
 import AppError from '@shared/errors/AppError'
 
