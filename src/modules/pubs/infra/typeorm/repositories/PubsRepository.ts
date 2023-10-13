@@ -1,8 +1,10 @@
-import { Repository, getRepository } from 'typeorm'
+import { Repository } from 'typeorm'
 
 import { ICreatePub, IPubPaginate } from '@modules/pubs/domain/models'
 import { IPubsRepository } from '@modules/pubs/domain/repositories/IPubsRepository'
 import Pub from '@modules/pubs/infra/typeorm/entities/Pubs'
+
+import { dataSource } from '@shared/infra/typeorm'
 
 type SearchParams = {
   page: number
@@ -14,7 +16,7 @@ class PubRepository implements IPubsRepository {
   private ormRepository: Repository<Pub>
 
   constructor() {
-    this.ormRepository = getRepository(Pub)
+    this.ormRepository = dataSource.getRepository(Pub)
   }
 
   public async create({
@@ -49,21 +51,17 @@ class PubRepository implements IPubsRepository {
     await this.ormRepository.remove(pub)
   }
 
-  public async findByName(name: string): Promise<Pub | undefined> {
-    const pub = this.ormRepository.findOne({
-      where: {
-        name
-      }
+  public async findByName(name: string): Promise<Pub | null> {
+    const pub = this.ormRepository.findOneBy({
+      name
     })
 
     return pub
   }
 
-  public async findById(id: string): Promise<Pub | undefined> {
-    const pub = this.ormRepository.findOne({
-      where: {
-        id
-      }
+  public async findById(id: string): Promise<Pub | null> {
+    const pub = this.ormRepository.findOneBy({
+      id
     })
 
     return pub

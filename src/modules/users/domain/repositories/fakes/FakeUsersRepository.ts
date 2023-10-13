@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
-import { ICreateUser, IPaginateUser } from '@modules/users/domain/models'
+import { ICreateUser, IPaginateUser, IUser } from '@modules/users/domain/models'
 import { IUsersRepository } from '@modules/users/domain/repositories/IUsersRepository'
 import User from '@modules/users/infra/typeorm/entities/Users'
 
@@ -52,17 +52,17 @@ class FakeUsersRepository implements IUsersRepository {
     return result
   }
 
-  public async findByName(name: string): Promise<User | undefined> {
+  public async findByName(name: string): Promise<IUser | null> {
     const user = this.users.find((user) => user.name === name)
     return user
   }
 
-  public async findById(id: string): Promise<User | undefined> {
+  public async findById(id: string): Promise<IUser | null> {
     const user = this.users.find((user) => user.id === id)
     return user
   }
 
-  public async findByEmail(email: string): Promise<User | undefined> {
+  public async findByEmail(email: string): Promise<IUser | null> {
     const user = this.users.find((user) => user.email === email)
     return user
   }

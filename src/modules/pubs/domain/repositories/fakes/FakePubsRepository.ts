@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import { ICreatePub, IPubPaginate } from '@modules/pubs/domain/models'
+import { ICreatePub, IPub, IPubPaginate } from '@modules/pubs/domain/models'
 import { IPubsRepository } from '@modules/pubs/domain/repositories/IPubsRepository'
 import Pub from '@modules/pubs/infra/typeorm/entities/Pubs'
 
@@ -46,12 +46,12 @@ class FakePubRepository implements IPubsRepository {
 
   public async remove(pub: Pub): Promise<void> {}
 
-  public async findByName(name: string): Promise<Pub | undefined> {
+  public async findByName(name: string): Promise<IPub | null> {
     const pub = this.pubs.find((pub) => pub.name === name)
     return pub
   }
 
-  public async findById(id: string): Promise<Pub | undefined> {
+  public async findById(id: string): Promise<IPub | null> {
     const pub = this.pubs.find((pub) => pub.id === id)
     return pub
   }
