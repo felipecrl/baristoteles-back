@@ -7,12 +7,11 @@ import isAythenticated from '@shared/infra/http/middlewares/isAuthenticated'
 const pubsRouter = Router()
 const pubsController = new PubsController()
 
-pubsRouter.use(isAythenticated)
-
-pubsRouter.get('/', pubsController.index)
+pubsRouter.get('/', isAythenticated, pubsController.index)
 
 pubsRouter.get(
   '/:id',
+  isAythenticated,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.string().uuid().required()
@@ -23,6 +22,7 @@ pubsRouter.get(
 
 pubsRouter.post(
   '/',
+  isAythenticated,
   celebrate({
     [Segments.BODY]: {
       name: Joi.string().required(),
@@ -38,6 +38,7 @@ pubsRouter.post(
 
 pubsRouter.put(
   '/:id',
+  isAythenticated,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.string().uuid().required()

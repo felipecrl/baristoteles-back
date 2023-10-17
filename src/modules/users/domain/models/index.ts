@@ -66,7 +66,18 @@ export interface IUpdateProfile {
   old_password?: string
 }
 
+export interface IUpdateUser {
+  id: string
+  name: string
+  email: string
+  roles: string
+}
+
 export interface IUpdateUserAvatar {
   user_id: string
   avatarFilename: string
+}
+
+export interface IShowUser {
+  id: string
 }

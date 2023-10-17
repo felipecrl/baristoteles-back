@@ -16,6 +16,17 @@ const upload = multer(uploadConfig.multer)
 
 usersRouter.get('/', isAythenticated, usersController.index)
 
+usersRouter.get(
+  '/:id',
+  isAythenticated,
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required()
+    }
+  }),
+  usersController.show
+)
+
 usersRouter.post(
   '/',
   celebrate({
@@ -29,6 +40,17 @@ usersRouter.post(
   usersController.create
 )
 
+usersRouter.put(
+  '/:id',
+  isAythenticated,
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required()
+    }
+  }),
+  usersController.update
+)
+
 usersRouter.patch(
   '/avatar',
   isAythenticated,
@@ -38,7 +60,6 @@ usersRouter.patch(
 
 usersRouter.delete(
   '/:id',
-  isAythenticated,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.string().uuid().required()
