@@ -1,5 +1,4 @@
 import {
-  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -30,11 +29,6 @@ class User implements IUser {
 
   @Column()
   roles: string
-
-  @BeforeInsert()
-  beforeInsertActions() {
-    this.roles = 'user'
-  }
 
   @CreateDateColumn()
   created_at: Date

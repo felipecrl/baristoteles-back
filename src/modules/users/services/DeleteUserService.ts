@@ -5,7 +5,7 @@ import { IUsersRepository } from '@modules/users/domain/repositories/IUsersRepos
 
 import AppError from '@shared/errors/AppError'
 
-injectable()
+@injectable()
 class DeleteUserService {
   constructor(
     @inject('UsersRepository')

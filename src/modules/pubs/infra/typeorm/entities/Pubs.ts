@@ -5,7 +5,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm'
-// import { Expose } from 'class-transformer'
+import { Expose } from 'class-transformer'
 
 import { IPub } from '@modules/pubs/domain/models'
 
@@ -33,7 +33,7 @@ class Pub implements IPub {
   recommendation: string
 
   @Column()
-  avatar: string
+  cover: string
 
   @CreateDateColumn()
   created_at: Date
@@ -41,14 +41,14 @@ class Pub implements IPub {
   @UpdateDateColumn()
   updated_at: Date
 
-  // @Expose({ name: 'avatar_url' })
-  // getAvatarUrl(): string | null {
-  //   if (!this.avatar) {
-  //     return null
-  //   }
+  @Expose({ name: 'cover_url' })
+  getCoverUrl(): string | null {
+    if (!this.cover) {
+      return null
+    }
 
-  //   return `${process.env.APP_API_URL}/files/${this.avatar}`
-  // }
+    return `${process.env.APP_API_URL}/files/${this.cover}`
+  }
 }
 
 export default Pub

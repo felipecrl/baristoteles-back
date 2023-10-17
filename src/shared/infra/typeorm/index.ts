@@ -7,8 +7,6 @@ import Pub from '../../../modules/pubs/infra/typeorm/entities/Pubs'
 import { CreatePubs1696007651742 } from './migrations/1696007651742-CreatePubs'
 import { CreateUsers1696020637836 } from './migrations/1696020637836-CreateUsers'
 import { CreateUserTokens1696166605494 } from './migrations/1696166605494-CreateUserTokens'
-import { CreateNewColumnUser1696184755398 } from './migrations/1696184755398-CreateNewColumnUser'
-import { AddNewColumnPubs1697509128592 } from './migrations/1697509128592-AddNewColumnPubs'
 
 export const dataSource = new DataSource({
   type: 'postgres',
@@ -21,8 +19,6 @@ export const dataSource = new DataSource({
   migrations: [
     CreatePubs1696007651742,
     CreateUsers1696020637836,
-    CreateUserTokens1696166605494,
-    CreateNewColumnUser1696184755398,
-    AddNewColumnPubs1697509128592
+    CreateUserTokens1696166605494
   ]
 })

@@ -6,6 +6,7 @@ export interface IPub {
   neighborhood: string
   instagram: string
   recommendation: string
+  cover: string
   created_at: Date
   updated_at: Date
 }
