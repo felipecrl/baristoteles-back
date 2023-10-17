@@ -1,4 +1,9 @@
 import { inject, injectable } from 'tsyringe'
+import path from 'path'
+
+import EtherealMail from '@config/mail/EtherealMail'
+import SESMail from '@config/mail/SESMail'
+import mailConfig from '@config/mail/mail'
 
 import { ICreateUser, IUser } from '@modules/users/domain/models'
 import { IUsersRepository } from '@modules/users/domain/repositories/IUsersRepository'
@@ -16,7 +21,12 @@ class CreateUserService {
     private hashProvider: IHashProvider
   ) {}
 
-  public async execute({ name, email, password }: ICreateUser): Promise<IUser> {
+  public async execute({
+    name,
+    email,
+    password,
+    roles
+  }: ICreateUser): Promise<IUser> {
     const emailExists = await this.usersRepository.findByEmail(email)
 
     if (emailExists) {
@@ -28,8 +38,46 @@ class CreateUserService {
     const user = this.usersRepository.create({
       name,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      roles
     })
+
+    const welcomeTemplate = path.resolve(
+      __dirname,
+      '..',
+      'views',
+      'welcome.hbs'
+    )
+
+    if (mailConfig.driver === 'ses') {
+      await SESMail.sendMail({
+        to: {
+          name,
+          email
+        },
+        subject: '[Baristóteles] Bem Vindo!',
+        templateData: {
+          file: welcomeTemplate,
+          variables: {
+            name
+          }
+        }
+      })
+    } else {
+      await EtherealMail.sendMail({
+        to: {
+          name,
+          email
+        },
+        subject: '[Baristóteles] Bem Vindo!',
+        templateData: {
+          file: welcomeTemplate,
+          variables: {
+            name
+          }
+        }
+      })
+    }
 
     return user
   }

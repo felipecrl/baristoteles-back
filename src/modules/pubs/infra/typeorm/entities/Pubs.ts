@@ -5,6 +5,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm'
+// import { Expose } from 'class-transformer'
 
 import { IPub } from '@modules/pubs/domain/models'
 
@@ -31,11 +32,23 @@ class Pub implements IPub {
   @Column()
   recommendation: string
 
+  @Column()
+  avatar: string
+
   @CreateDateColumn()
   created_at: Date
 
   @UpdateDateColumn()
   updated_at: Date
+
+  // @Expose({ name: 'avatar_url' })
+  // getAvatarUrl(): string | null {
+  //   if (!this.avatar) {
+  //     return null
+  //   }
+
+  //   return `${process.env.APP_API_URL}/files/${this.avatar}`
+  // }
 }
 
 export default Pub

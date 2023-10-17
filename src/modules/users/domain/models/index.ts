@@ -31,6 +31,7 @@ export interface ICreateUser {
   name: string
   email: string
   password: string
+  roles: string
 }
 
 export interface IDeleteUser {
