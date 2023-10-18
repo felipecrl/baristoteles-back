@@ -29,8 +29,15 @@ class PubsController {
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
-    const { name, address, number, neighborhood, instagram, recommendation } =
-      request.body
+    const {
+      name,
+      address,
+      number,
+      neighborhood,
+      instagram,
+      recommendation,
+      date
+    } = request.body
 
     const createPub = container.resolve(CreatePubService)
 
@@ -40,7 +47,8 @@ class PubsController {
       number,
       neighborhood,
       instagram,
-      recommendation
+      recommendation,
+      date
     })
 
     return response.json(pub)
@@ -48,8 +56,15 @@ class PubsController {
 
   public async update(request: Request, response: Response): Promise<Response> {
     const { id } = request.params
-    const { name, address, number, neighborhood, instagram, recommendation } =
-      request.body
+    const {
+      name,
+      address,
+      number,
+      neighborhood,
+      instagram,
+      recommendation,
+      date
+    } = request.body
 
     const updatePub = container.resolve(UpdatePubService)
 
@@ -60,7 +75,8 @@ class PubsController {
       number,
       neighborhood,
       instagram,
-      recommendation
+      recommendation,
+      date
     })
 
     return response.json(pub)

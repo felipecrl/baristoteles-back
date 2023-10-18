@@ -25,7 +25,8 @@ class PubRepository implements IPubsRepository {
     number,
     neighborhood,
     instagram,
-    recommendation
+    recommendation,
+    date
   }: ICreatePub): Promise<Pub> {
     const pub = this.ormRepository.create({
       name,
@@ -33,7 +34,8 @@ class PubRepository implements IPubsRepository {
       number,
       neighborhood,
       instagram,
-      recommendation
+      recommendation,
+      date
     })
 
     await this.ormRepository.save(pub)

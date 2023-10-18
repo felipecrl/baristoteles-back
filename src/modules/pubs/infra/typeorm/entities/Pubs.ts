@@ -35,6 +35,9 @@ class Pub implements IPub {
   @Column()
   cover: string
 
+  @Column()
+  date: Date
+
   @CreateDateColumn()
   created_at: Date
 

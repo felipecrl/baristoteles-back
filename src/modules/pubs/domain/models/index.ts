@@ -7,6 +7,7 @@ export interface IPub {
   instagram: string
   recommendation: string
   cover: string
+  date: Date
   created_at: Date
   updated_at: Date
 }
@@ -18,6 +19,7 @@ export interface ICreatePub {
   neighborhood: string
   instagram: string
   recommendation: string
+  date: Date
 }
 
 export interface IDeletePub {
@@ -36,6 +38,7 @@ export interface IUpdatePub {
   neighborhood: string
   instagram: string
   recommendation: string
+  date: Date
 }
 
 export interface IPubPaginate {

@@ -30,7 +30,8 @@ pubsRouter.post(
       number: Joi.string().required(),
       neighborhood: Joi.string().required(),
       instagram: Joi.string().required(),
-      recommendation: Joi.string().required()
+      recommendation: Joi.string().required(),
+      date: Joi.string().required()
     }
   }),
   pubsController.create
@@ -49,7 +50,8 @@ pubsRouter.put(
       number: Joi.string().required(),
       neighborhood: Joi.string().required(),
       instagram: Joi.string().required(),
-      recommendation: Joi.string().required()
+      recommendation: Joi.string().required(),
+      date: Joi.string().required()
     }
   }),
   pubsController.update

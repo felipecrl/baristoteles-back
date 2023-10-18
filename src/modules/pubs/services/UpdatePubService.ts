@@ -20,7 +20,8 @@ class UpdatePubService {
     number,
     neighborhood,
     instagram,
-    recommendation
+    recommendation,
+    date
   }: IUpdatePub): Promise<IPub> {
     const pub = await this.pubsRepository.findById(id)
 
@@ -42,6 +43,7 @@ class UpdatePubService {
     pub.neighborhood = neighborhood
     pub.instagram = instagram
     pub.recommendation = recommendation
+    pub.date = date
 
     await this.pubsRepository.save(pub)
 

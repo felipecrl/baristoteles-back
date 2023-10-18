@@ -19,7 +19,8 @@ class CreatePubService {
     number,
     neighborhood,
     instagram,
-    recommendation
+    recommendation,
+    date
   }: ICreatePub): Promise<IPub> {
     const pubExists = await this.pubsRepository.findByName(name)
 
@@ -33,7 +34,8 @@ class CreatePubService {
       number,
       neighborhood,
       instagram,
-      recommendation
+      recommendation,
+      date
     })
 
     await redisCache.invalidate('api-baristoteles-PUB_LIST')

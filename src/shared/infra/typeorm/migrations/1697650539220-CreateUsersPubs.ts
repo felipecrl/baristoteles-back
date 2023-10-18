@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm'
 
-export class CreatePubs1696007651742 implements MigrationInterface {
+export class CreateUsersPubs1697650539220 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'pubs',
+        name: 'user_pubs',
         columns: [
           {
             name: 'id',
@@ -14,37 +14,12 @@ export class CreatePubs1696007651742 implements MigrationInterface {
             default: 'uuid_generate_v4()'
           },
           {
-            name: 'name',
-            type: 'varchar'
+            name: 'pub_id',
+            type: 'uuid'
           },
           {
-            name: 'address',
-            type: 'varchar'
-          },
-          {
-            name: 'number',
-            type: 'varchar'
-          },
-          {
-            name: 'neighborhood',
-            type: 'varchar'
-          },
-          {
-            name: 'instagram',
-            type: 'varchar'
-          },
-          {
-            name: 'recommendation',
-            type: 'varchar'
-          },
-          {
-            name: 'cover',
-            type: 'varchar',
-            isNullable: true
-          },
-          {
-            name: 'date',
-            type: 'timestamp with time zone'
+            name: 'user_id',
+            type: 'uuid'
           },
           {
             name: 'created_at',
@@ -56,12 +31,30 @@ export class CreatePubs1696007651742 implements MigrationInterface {
             type: 'timestamp with time zone',
             default: 'now()'
           }
+        ],
+        foreignKeys: [
+          {
+            name: 'UserPub',
+            referencedTableName: 'pubs',
+            referencedColumnNames: ['id'],
+            columnNames: ['pub_id'],
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE'
+          },
+          {
+            name: 'User',
+            referencedTableName: 'users',
+            referencedColumnNames: ['id'],
+            columnNames: ['user_id'],
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE'
+          }
         ]
       })
     )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('pubs')
+    await queryRunner.dropTable('user_pubs')
   }
 }
